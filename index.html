@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <title>Time chart</title>
+</head>
+<body>
+    <div id="myPlot"></div>
+
+    <script>
+        const day = 24;
+        const sleep = parseFloat(prompt('When did you wake up today? '))
+        const classes = parseFloat(prompt('How many classes do you have today? '));
+        const class_time = classes * 1.5;
+        const gamering = parseFloat(prompt('For how many hours are you going to game today? '));
+        const study = parseFloat(prompt('For how many hours are you going to study today? '));
+        const eat = parseFloat(prompt('For how many hours are you going to be eating today? '));
+        const bath = parseFloat(prompt('For how many hours are you going to be in the bathroom today? '));
+        const total = sleep + class_time + gamering + study + eat + bath;
+
+        if (total > day) {
+            alert('Your schedule is over 24 hours! Check your schedule again for any mistakes.');
+        } else {
+            const free = day - total;
+            const data = [
+                {
+                    values: [
+                        sleep,
+                        class_time,
+                        gamering,
+                        study,
+                        eat,
+                        bath,
+                        free,
+                    ],
+                    labels: [
+                        'You woke up at ' + sleep,
+                        'You had classes for ' + class_time + ' hours',
+                        'You spent ' + gamering + ' hours gaming',
+                        'You spent ' + study + ' hours studying',
+                        'You spent ' + eat + ' hours on eating',
+                        'You spent ' + bath + ' hours in the bathroom',
+                        'You have ' + free + ' hours of free time',
+                        
+                    ],
+                    type: 'pie',
+                }
+            ]
+            Plotly.newPlot('myPlot', data);
+        }
+    </script>
+</body>
+</html>
