@@ -4,53 +4,65 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.3/Chart.min.js"></script>
     <title>Time chart</title>
 </head>
 <body>
-    <div id="myPlot"></div>
+    <form name="timeForm" method="post">
+      How many classes do you have? : 
+      <input type="text" name="classes" value="">
+      <br>
+      When did you wake up? : 
+      <input type="text" name="sleep" value="">
+      <br> 
+      How many hours are you gonna spend gaming? :
+      <input type="text" name="gamering" value="">
+      <br>
+      How many hours are you gonna spend studying? :
+      <input type="text" name="study" value="">
+      <br>
+      How many hours are you gonna spend eating? :
+      <input type="text" name="eat" value="">
+      <br>
+      How many hours are you gonna spend in the bathroom? :
+      <input type="text" name="bath" value="">
+      <br>
+      <button type="button" onclick="timeGraph();">Confirm</button> 
+      <h2>Time graph</h2> 
+      <canvas id="time_chart" height="50"></canvas> 
+    </form>  
 
     <script>
-        const day = 24;
-        const sleep = parseFloat(prompt('When did you wake up today? '))
-        const classes = parseFloat(prompt('How many classes do you have today? '));
-        const class_time = classes * 1.5;
-        const gamering = parseFloat(prompt('For how many hours are you going to game today? '));
-        const study = parseFloat(prompt('For how many hours are you going to study today? '));
-        const eat = parseFloat(prompt('For how many hours are you going to be eating today? '));
-        const bath = parseFloat(prompt('For how many hours are you going to be in the bathroom today? '));
-        const total = sleep + class_time + gamering + study + eat + bath;
-
-        if (total > day) {
-            alert('Your schedule is over 24 hours! Check your schedule again for any mistakes.');
-        } else {
-            const free = day - total;
-            const data = [
-                {
-                    values: [
-                        sleep,
-                        class_time,
-                        gamering,
-                        study,
-                        eat,
-                        bath,
-                        free,
-                    ],
-                    labels: [
-                        'You woke up at ' + sleep,
-                        'You had classes for ' + class_time + ' hours',
-                        'You spent ' + gamering + ' hours gaming',
-                        'You spent ' + study + ' hours studying',
-                        'You spent ' + eat + ' hours on eating',
-                        'You spent ' + bath + ' hours in the bathroom',
-                        'You have ' + free + ' hours of free time',
-                        
-                    ],
-                    type: 'pie',
-                }
-            ]
-            Plotly.newPlot('myPlot', data);
-        }
+        function timeGraph() {
+        var classes = document.timeForm.classes.value * 1.5,
+           sleep = document.timeForm.sleep.value,
+           gamering = document.timeForm.gamering.value,
+           study = document.timeForm.study.value,
+           eat = document.timeForm.eat.value,
+           bath = document.timeForm.bath.value,
+           free = 24 - classes - sleep - gamering - study - eat - bath
+           if (free < 0) {
+              alert("Schedule over 24 hours!")
+              stop
+           }
+           ctx = document.getElementById('time_chart').getContext('2d');
+         var data = {
+            labels: ["Class hours", "Woke up at", "Gaming hours", "Studying hours", "Eating hours", "Bathroom hours", "Free hours"],
+            datasets:
+               [{
+                  data: [classes, sleep, gamering, study, eat, bath, free],
+                  backgroundColor: ["#EF0000", "#0000EF", "#008000", "#800080", "#DFFF00", "#FFBF00", "#9FE2BF"],
+                  hoverBackgroundColor: ["#FF0000", "#0000FF", "#009000", "#900090", "#DFFF50", "#FFBF50", "#ADE8CA"]
+               }]
+         };
+         var options = {};
+         var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: data,
+            options: options
+         });
+      }
+   
     </script>
 </body>
 </html>
